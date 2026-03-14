@@ -1,0 +1,33 @@
+<!-- 
+// ============================================================
+//  FILE: views/index.ejs
+//  ROLE: The Main Home Page (Updated to use Partials)
+// ============================================================ 
+-->
+
+<!-- 1. Include the Header Navbar (This drops the <nav> and HTML setup right here) -->
+<%- include('partials/header') %>
+
+<!-- 2. The Main Page Content -->
+<div class="hero">
+    <h1>Welcome to Nexus</h1>
+    <p>The ultimate client and project management SaaS application.</p>
+    
+    <!-- We give this an ID so our JS can change the link based on if they are logged in -->
+    <a href="/login" class="btn-primary" id="hero-btn">Get Started</a>
+</div>
+
+<script>
+    // A tiny script just for the home page to change the Get Started button
+    // It runs after auth.js runs
+    document.addEventListener("DOMContentLoaded", () => {
+        if(localStorage.getItem("nexusToken")) {
+            const heroBtn = document.getElementById("hero-btn");
+            heroBtn.href = "/dashboard";
+            heroBtn.innerText = "Go to Dashboard";
+        }
+    });
+</script>
+
+<!-- 3. Include the Footer (This closes the <main> and loads JavaScript) -->
+<%- include('partials/footer') %>

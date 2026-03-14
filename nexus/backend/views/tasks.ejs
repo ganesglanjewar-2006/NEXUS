@@ -1,0 +1,74 @@
+<!-- 
+// ============================================================
+//  FILE: views/tasks.ejs
+//  ROLE: The Task Management Page
+//  WHY THIS FILE EXISTS:
+//    Allows users to assign specific checklist items (Tasks) 
+//    to a specific Project.
+// ============================================================ 
+-->
+
+<%- include('partials/header') %>
+<script>if (!localStorage.getItem("nexusToken")) window.location.href = "/login";</script>
+
+<div class="content-wrapper">
+    <div class="page-header">
+        <h1><i class="fa-solid fa-list-check"></i> Tasks</h1>
+        <p>Manage to-do items for all your projects.</p>
+    </div>
+
+    <!-- The 'Add Task' Form -->
+    <div class="card mb-4">
+        <h3>Create New Task</h3>
+        <form id="add-task-form">
+            <div class="form-row">
+                <div class="form-group flex-2">
+                    <input type="text" id="taskTitle" placeholder="Task Title (e.g. Design Logo)" required>
+                </div>
+                <!-- We will use JS to fill this dropdown with REAL projects from the DB -->
+                <div class="form-group flex-1">
+                    <select id="taskProject" required>
+                        <option value="">-- Select Project --</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group flex-2">
+                    <input type="text" id="taskDesc" placeholder="Brief task description..." required>
+                </div>
+                <div class="form-group flex-1">
+                    <select id="taskStatus">
+                        <option value="false">Not Completed</option>
+                        <option value="true">Completed</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn-primary" style="margin-top: 0;">Add Task</button>
+                </div>
+            </div>
+            <div id="task-error" class="error-msg" style="display: none;"></div>
+        </form>
+    </div>
+
+    <!-- Tasks List Display (Table) -->
+    <div class="card">
+        <h3>All Tasks</h3>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Status</th>
+                    <th>Task Title</th>
+                    <th>Description</th>
+                    <th>Associated Project</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="tasks-table-body">
+                <tr><td colspan="5" style="text-align: center;">Loading tasks...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

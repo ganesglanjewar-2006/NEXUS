@@ -1,0 +1,60 @@
+<!-- 
+// ============================================================
+//  FILE: views/dashboard.ejs
+//  ROLE: The Main User Dashboard
+//  WHY THIS FILE EXISTS:
+//    After a user logs in, this is the first page they see.
+//    It shows a quick summary: total clients, total projects.
+// ============================================================ 
+-->
+
+<%- include('partials/header') %>
+
+<!-- A quick inline script to protect this page from logged-out users! -->
+<script>
+    if (!localStorage.getItem("nexusToken")) window.location.href = "/login";
+</script>
+
+<div class="dashboard-container">
+    <div class="header-section">
+        <h1><i class="fa-solid fa-chart-pie"></i> Dashboard</h1>
+        <p>Welcome back! Here is a summary of your workspace.</p>
+    </div>
+
+    <div class="stats-grid">
+        <!-- Client Stat Box -->
+        <div class="stat-card">
+            <div class="stat-icon" style="background: #e0f2fe; color: #0ea5e9;">
+                <i class="fa-solid fa-users"></i>
+            </div>
+            <div class="stat-data">
+                <h3 id="dash-client-count">0</h3>
+                <p>Total Clients</p>
+            </div>
+        </div>
+
+        <!-- Project Stat Box -->
+        <div class="stat-card">
+            <div class="stat-icon" style="background: #fef08a; color: #ca8a04;">
+                <i class="fa-solid fa-folder-open"></i>
+            </div>
+            <div class="stat-data">
+                <h3 id="dash-project-count">0</h3>
+                <p>Total Projects</p>
+            </div>
+        </div>
+        
+        <!-- Task Stat Box -->
+        <div class="stat-card">
+            <div class="stat-icon" style="background: #dcfce7; color: #16a34a;">
+                <i class="fa-solid fa-list-check"></i>
+            </div>
+            <div class="stat-data">
+                <h3 id="dash-task-count">0</h3>
+                <p>Total Tasks</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

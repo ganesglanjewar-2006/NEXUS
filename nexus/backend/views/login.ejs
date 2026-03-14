@@ -1,0 +1,42 @@
+<!-- 
+// ============================================================
+//  FILE: views/login.ejs
+//  ROLE: The Login Page UI
+//  WHY THIS FILE EXISTS:
+//    This is where the user types in their Email and Password.
+//    When they click submit, JS will send it to the backend.
+// ============================================================ 
+-->
+
+<%- include('partials/header') %>
+
+<div class="auth-container">
+    <div class="auth-box">
+        <h2><i class="fa-solid fa-right-to-bracket"></i> Login to Nexus</h2>
+        
+        <!-- This is an HTML Form. We give it an ID so our api.js file can listen to it later -->
+        <form id="login-form">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <!-- required means the browser won't let them submit if it's empty -->
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter password" required>
+            </div>
+            
+            <!-- Where errors will show up (like 'Wrong password!') -->
+            <div id="login-error" class="error-msg" style="display: none;"></div>
+            
+            <button type="submit" class="btn-primary w-100">Login</button>
+        </form>
+        
+        <p class="auth-switch">
+            Don't have an account? <a href="/register">Register here</a>
+        </p>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

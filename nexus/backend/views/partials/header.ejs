@@ -1,0 +1,52 @@
+<!-- 
+// ============================================================
+//  FILE: views/partials/header.ejs
+//  ROLE: Top part of every single HTML page
+//  WHY THIS FILE EXISTS:
+//    Every page needs the same <head>, CSS links, and top Navbar.
+//    Instead of copying and pasting this 10 times, we write it ONCE
+//    here, and "include" it at the top of every other page.
+// ============================================================ 
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- This makes the site work on mobile phones beautifully! -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus SaaS | <%= title || 'Dashboard' %></title>
+    
+    <!-- Link to our global CSS file in the public folder -->
+    <link rel="stylesheet" href="/style.css">
+    
+    <!-- We bring in FontAwesome so we can use cool icons in our dashboard -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- 🌟 THE TOP NAVIGATION BAR 🌟 -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fa-solid fa-cube"></i> Nexus
+        </div>
+        
+        <!-- These links define how the user moves around the app -->
+        <ul class="nav-links" id="nav-links">
+            <!-- Normal Links -->
+            <li class="nav-item"><a href="/">Home</a></li>
+            
+            <!-- These links ONLY show up if the user is LOGGED IN -->
+            <li class="auth-required" style="display: none;"><a href="/dashboard">Dashboard</a></li>
+            <li class="auth-required" style="display: none;"><a href="/clients">Clients</a></li>
+            <li class="auth-required" style="display: none;"><a href="/projects">Projects</a></li>
+            <li class="auth-required" style="display: none;"><a href="/tasks">Tasks</a></li>
+            
+            <!-- Login / Logout buttons -->
+            <li class="nav-item not-auth" id="login-nav"><a href="/login" class="btn-outline">Login</a></li>
+            <li class="nav-item auth-required" id="logout-nav"><a href="#" id="logout-btn" class="btn-danger">Logout</a></li>
+        </ul>
+    </nav>
+
+    <!-- The actual page content will be injected below this line -->
+    <main class="content-wrapper">

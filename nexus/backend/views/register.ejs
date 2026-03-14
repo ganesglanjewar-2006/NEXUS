@@ -1,0 +1,49 @@
+<!-- 
+// ============================================================
+//  FILE: views/register.ejs
+//  ROLE: The Registration Page UI
+//  WHY THIS FILE EXISTS:
+//    Allows new users to create an account by entering their
+//    Name, Email, and Password.
+// ============================================================ 
+-->
+
+<%- include('partials/header') %>
+
+<div class="auth-container">
+    <div class="auth-box">
+        <h2><i class="fa-solid fa-user-plus"></i> Create an Account</h2>
+        
+        <!-- The Register Form -->
+        <form id="register-form">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <!-- This matches the 'name' field in our User.js model! -->
+                <input type="text" id="name" name="name" placeholder="E.g. John Doe" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <!-- This matches the 'email' field in our User.js model! -->
+                <input type="email" id="email" name="email" placeholder="example@company.com" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <!-- This matches the 'password' field in our User.js model! -->
+                <input type="password" id="password" name="password" placeholder="At least 6 characters" required minlength="6">
+            </div>
+            
+            <!-- Error messages like 'Email already used' go here -->
+            <div id="register-error" class="error-msg" style="display: none;"></div>
+            
+            <button type="submit" class="btn-primary w-100">Sign Up</button>
+        </form>
+        
+        <p class="auth-switch">
+            Already have an account? <a href="/login">Login here</a>
+        </p>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

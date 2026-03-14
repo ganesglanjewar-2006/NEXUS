@@ -1,0 +1,68 @@
+<!-- 
+// ============================================================
+//  FILE: views/projects.ejs
+//  ROLE: The Project Management Page
+//  WHY THIS FILE EXISTS:
+//    Lists all your projects and lets you assign new projects
+//    to specific clients you already created.
+// ============================================================ 
+-->
+
+<%- include('partials/header') %>
+<script>if (!localStorage.getItem("nexusToken")) window.location.href = "/login";</script>
+
+<div class="content-wrapper">
+    <div class="page-header">
+        <h1><i class="fa-solid fa-folder-open"></i> Projects</h1>
+        <p>Track all active and completed client projects.</p>
+    </div>
+
+    <!-- The 'Add Project' Form -->
+    <div class="card mb-4">
+        <h3>Create New Project</h3>
+        <form id="add-project-form">
+            <div class="form-row">
+                <div class="form-group flex-1">
+                    <input type="text" id="projName" placeholder="Project Name (e.g. Website Redesign)" required>
+                </div>
+                <!-- We will use JS to fill this dropdown with REAL clients from the DB -->
+                <div class="form-group flex-1">
+                    <select id="projClient" required>
+                        <option value="">-- Loading Clients... --</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group flex-2">
+                    <input type="text" id="projDesc" placeholder="Brief project description..." required>
+                </div>
+                <div class="form-group flex-1">
+                    <input type="date" id="projDeadline" required>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group flex-1">
+                    <select id="projStatus" required>
+                        <option value="Not Started">Not Started</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn-primary" style="margin-top: 0;">Create Project</button>
+                </div>
+            </div>
+            <div id="project-error" class="error-msg" style="display: none;"></div>
+        </form>
+    </div>
+
+    <!-- Projects Grid Display -->
+    <div class="projects-grid" id="projects-container">
+        <!-- JS WILL INJECT CARDS HERE -->
+        <p>Loading projects...</p>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

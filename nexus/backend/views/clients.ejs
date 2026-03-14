@@ -1,0 +1,69 @@
+<!-- 
+// ============================================================
+//  FILE: views/clients.ejs
+//  ROLE: The Client Management Page
+//  WHY THIS FILE EXISTS:
+//    Shows a list of all your clients in a table. It also
+//    has a form at the top to add new clients.
+// ============================================================ 
+-->
+
+<%- include('partials/header') %>
+<script>if (!localStorage.getItem("nexusToken")) window.location.href = "/login";</script>
+
+<div class="content-wrapper">
+    <!-- Header Section -->
+    <div class="page-header">
+        <h1><i class="fa-solid fa-users"></i> Clients</h1>
+        <p>Manage all your business clients here.</p>
+    </div>
+
+    <!-- The 'Add Client' Form -->
+    <div class="card mb-4">
+        <h3>Add New Client</h3>
+        <form id="add-client-form">
+            <div class="form-row">
+                <div class="form-group flex-1">
+                    <input type="text" id="clientName" placeholder="Client Name" required>
+                </div>
+                <div class="form-group flex-1">
+                    <input type="email" id="clientEmail" placeholder="Email Address" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group flex-1">
+                    <input type="text" id="clientPhone" placeholder="Phone Number" required>
+                </div>
+                <div class="form-group flex-1">
+                    <input type="text" id="clientCompany" placeholder="Company Name" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn-primary" style="margin-top: 0;">Save Client</button>
+                </div>
+            </div>
+            <div id="client-error" class="error-msg" style="display: none;"></div>
+        </form>
+    </div>
+
+    <!-- The Clients Table (Filled automatically by JS later) -->
+    <div class="card">
+        <h3>Existing Clients</h3>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Company</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="clients-table-body">
+                <!-- JS WILL INJECT <tr> ROWS HERE -->
+                <tr><td colspan="5" style="text-align: center;">Loading clients...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
