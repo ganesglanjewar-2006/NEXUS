@@ -1,0 +1,38 @@
+/* CapitalVue — Component-Level Styles */
+
+/* Gold accent glow for cards on hover */
+.cv-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(234, 179, 8, 0.15);
+  transition: all 0.3s ease;
+}
+
+.cv-card {
+  transition: all 0.3s ease;
+}
+
+/* Gradient text for headings */
+.cv-gradient-text {
+  background: linear-gradient(135deg, #f59e0b 0%, #eab308 50%, #fbbf24 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glass morphism effect for panels */
+.cv-glass {
+  background: rgba(30, 41, 59, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(71, 85, 105, 0.4);
+  border-radius: 16px;
+}
+
+/* Pulse animation for status indicators */
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(234, 179, 8, 0); }
+}
+
+.cv-pulse {
+  animation: pulse-gold 2s infinite;
+}
