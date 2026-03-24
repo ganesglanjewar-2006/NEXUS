@@ -39,17 +39,20 @@ if (process.env.NODE_ENV === "production") {
     });
 }
 
-const PORT = process.env.PORT || 5001;
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+    const server = app.listen(PORT, () => {
+        console.log(`🚀 CapitalVue Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+    });
 
-const server = app.listen(PORT, () => {
-    console.log(`🚀 CapitalVue Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
-});
+    server.on('error', (err) => {
+        if (err.code === 'EADDRINUSE') {
+            console.error(`❌ Port ${PORT} is already in use. Please try another port.`);
+        } else {
+            console.error('❌ Server error:', err);
+        }
+        process.exit(1);
+    });
+}
 
-server.on('error', (err) => {
-    if (err.code === 'EADDRINUSE') {
-        console.error(`❌ Port ${PORT} is already in use. Please try another port.`);
-    } else {
-        console.error('❌ Server error:', err);
-    }
-    process.exit(1);
-});
+// Export for Vercel
+module.exports = app;
