@@ -39,6 +39,15 @@ if (process.env.NODE_ENV === "production") {
     });
 }
 
+// Global Error Handler for Vercel troubleshooting
+app.use((err, req, res, next) => {
+    console.error("🔥 Global Error Caught:", err.message);
+    res.status(500).json({
+        message: "Internal Server Error",
+        error: process.env.NODE_ENV === 'production' ? 'Refer to Vercel logs' : err.message
+    });
+});
+
 if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
     const server = app.listen(PORT, () => {
         console.log(`🚀 CapitalVue Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
