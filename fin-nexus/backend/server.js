@@ -1,7 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
-
+const path = require("path");
 const connectDB = require("./config/db");
 
 // Load env vars
@@ -14,15 +14,18 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// DEBUG: Log every request to verify routing
+// DEBUG: Log every request
 app.use((req, res, next) => {
-    console.log(`📥 [${req.method}] ${req.url} | MONGO_URI exists: ${!!process.env.MONGO_URI}`);
+    console.log(`📥 [${req.method}] ${req.url} | MONGO_URI: ${!!process.env.MONGO_URI}`);
     next();
 });
 
-// --- DB CONNECTION MIDDLEWARE ---
-// Connects per-request (with caching) — required for serverless environments
+// --- DB CONNECTION MIDDLEWARE (serverless-safe) ---
 app.use(async (req, res, next) => {
+    // Skip DB connection for static file requests
+    if (req.url.match(/\.(js|css|png|jpg|ico|svg|woff|woff2|ttf|eot|map)$/)) {
+        return next();
+    }
     try {
         await connectDB();
         next();
@@ -32,41 +35,40 @@ app.use(async (req, res, next) => {
     }
 });
 
-// --- ROUTES ---
+// --- API ROUTES ---
 app.use("/api/users", require("./routes/authRoutes"));
 app.use("/api/portfolio", require("./routes/portfolioRoutes"));
-app.use("/api/stocks", require("./routes/stockRoutes"));  // Stock market data API
+app.use("/api/stocks", require("./routes/stockRoutes"));
 
-// ROOT ROUTE - API health check
-app.get("/", (req, res) => {
-    res.json({ message: "CapitalVue API is Running!", status: "ok" });
+// --- SERVE FRONTEND ---
+// Serve static files from the built frontend
+const frontendPath = path.join(__dirname, "../frontend/dist");
+app.use(express.static(frontendPath));
+
+// SPA fallback - any non-API route serves index.html
+app.get("*", (req, res) => {
+    res.sendFile(path.join(frontendPath, "index.html"));
 });
 
-// Global Error Handler for Vercel troubleshooting
+// Global Error Handler
 app.use((err, req, res, next) => {
-    console.error("🔥 Global Error Caught:", err.message);
+    console.error("🔥 Global Error:", err.message);
     res.status(500).json({
         message: "Internal Server Error",
-        error: process.env.NODE_ENV === 'production' ? 'Refer to Vercel logs' : err.message
+        error: process.env.NODE_ENV === 'production' ? 'Check Vercel logs' : err.message
     });
 });
 
 const PORT = process.env.PORT || 5002;
 
-if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+if (!process.env.VERCEL) {
     const server = app.listen(PORT, () => {
-        console.log(`🚀 CapitalVue Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+        console.log(`🚀 CapitalVue running on port ${PORT}`);
     });
-
     server.on('error', (err) => {
-        if (err.code === 'EADDRINUSE') {
-            console.error(`❌ Port ${PORT} is already in use. Please try another port.`);
-        } else {
-            console.error('❌ Server error:', err);
-        }
+        console.error('❌ Server error:', err);
         process.exit(1);
     });
 }
 
-// Export for Vercel
 module.exports = app;
