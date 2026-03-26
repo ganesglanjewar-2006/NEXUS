@@ -7,15 +7,24 @@ const connectDB = require("./config/db");
 // Load env vars
 dotenv.config();
 
-// Connect to Database
-connectDB();
-
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// --- DB CONNECTION MIDDLEWARE ---
+// Connects per-request (with caching) — required for serverless environments
+app.use(async (req, res, next) => {
+    try {
+        await connectDB();
+        next();
+    } catch (err) {
+        console.error("❌ Failed to connect to DB:", err.message);
+        return res.status(503).json({ message: "Database unavailable. Please try again." });
+    }
+});
 
 // --- ROUTES ---
 app.use("/api/users", require("./routes/authRoutes"));
