@@ -1,5 +1,7 @@
-// This is the Vercel Serverless Function entry point.
-// It wraps the Express backend app for the /api/* routes.
+// Vercel Serverless Function - wraps the Express backend
 const app = require('../backend/server.js');
 
-module.exports = app;
+// Export as an explicit Vercel-compatible request handler
+module.exports = (req, res) => {
+    return app(req, res);
+};
