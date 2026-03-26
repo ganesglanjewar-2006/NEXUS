@@ -14,6 +14,12 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// DEBUG: Log every request to verify routing
+app.use((req, res, next) => {
+    console.log(`📥 [${req.method}] ${req.url} | MONGO_URI exists: ${!!process.env.MONGO_URI}`);
+    next();
+});
+
 // --- DB CONNECTION MIDDLEWARE ---
 // Connects per-request (with caching) — required for serverless environments
 app.use(async (req, res, next) => {
