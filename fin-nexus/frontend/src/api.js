@@ -1,16 +1,14 @@
 import axios from 'axios';
 
-// Create a centralized axios instance
-// In development, it defaults to localhost:5002
-// In production, it will use the current host (same as the backend)
+// Always use relative URL (empty string = current origin)
+// In development: Vite's proxy forwards /api/* to localhost:5002
+// In production: requests go directly to the Vercel serverless function at the same domain
 const API = axios.create({
-    baseURL: import.meta.env.PROD 
-        ? '' // Same origin (monolithic deployment)
-        : 'http://localhost:5002',
-    timeout: 10000,
+    baseURL: '',
+    timeout: 15000,
 });
 
-// Automatically add the token to every request if it exists
+// Automatically add the JWT token to every request if it exists
 API.interceptors.request.use((config) => {
     const token = localStorage.getItem('token');
     if (token) {
