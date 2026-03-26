@@ -48,6 +48,8 @@ app.use((err, req, res, next) => {
     });
 });
 
+const PORT = process.env.PORT || 5002;
+
 if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
     const server = app.listen(PORT, () => {
         console.log(`🚀 CapitalVue Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
