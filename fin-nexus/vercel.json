@@ -1,7 +1,8 @@
 {
   "version": 2,
-  "buildCommand": "cd fin-nexus/frontend && npm install && npm run build",
-  "outputDirectory": "fin-nexus/frontend/dist",
+  "installCommand": "cd frontend && npm install && cd ../backend && npm install",
+  "buildCommand": "cd frontend && npm run build",
+  "outputDirectory": "frontend/dist",
   "rewrites": [
     {
       "source": "/api/(.*)",
