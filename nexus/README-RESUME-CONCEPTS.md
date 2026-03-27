@@ -55,6 +55,7 @@ If an interviewer asks you how this app works, here are the most important Javas
 **How to Answer:**
 > "I built a custom authentication middleware in Express using JSON Web Tokens (JWT). When a user successfully logs in, the backend cryptographically signs a token with a secret key. Every route (like `/api/clients`) is wrapped in my `protect` middleware. The middleware intercepts the request, grabs the token from the `Authorization` header, verifies the signature, and automatically attaches the specific User ID to the request object. If the token is missing or faked, the server immediately rejects the request with a 401 error."
 
+
 ### Question 3: "If User A logs in, how did you guarantee they don't see the Projects created by User B?"
 **How to Answer:**
 > "Security doesn't stop at the authentication middleware. Even though they are logged in, I manually enforce data isolation at the Controller level. In my Mongoose Schema, every single Client, Project, and Task requires a `user` field that holds their `ObjectId`. In my Controller functions, when a user asks to view projects, I query `Project.find({ user: req.user.id })`. This ensures the database physically only returns rows created by that specific logged-in user."
