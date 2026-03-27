@@ -41,13 +41,51 @@ app.use("/api/portfolio", require("./routes/portfolioRoutes"));
 app.use("/api/stocks", require("./routes/stockRoutes"));
 
 // --- SERVE FRONTEND ---
-// Serve static files from the built frontend
-const frontendPath = path.join(__dirname, "../frontend/dist");
+// Robust path resolution for Vercel/Local
+const possibleFrontendPaths = [
+    path.join(__dirname, "../frontend/dist"),
+    path.join(process.cwd(), "frontend/dist"),
+    path.join(process.cwd(), "fin-nexus/frontend/dist")
+];
+
+let frontendPath = possibleFrontendPaths[0];
+const fs = require('fs');
+
+for (const p of possibleFrontendPaths) {
+    if (fs.existsSync(p)) {
+        frontendPath = p;
+        break;
+    }
+}
+
+console.log(`📂 Selected frontendPath: ${frontendPath}`);
+
 app.use(express.static(frontendPath));
+
+// API Health Check
+app.get("/api/health", (req, res) => {
+    res.json({
+        status: "ok",
+        frontendPath,
+        cwd: process.cwd(),
+        dir: __dirname,
+        exists: fs.existsSync(path.join(frontendPath, "index.html"))
+    });
+});
 
 // SPA fallback - any non-API route serves index.html
 app.get("*", (req, res) => {
-    res.sendFile(path.join(frontendPath, "index.html"));
+    const indexPath = path.join(frontendPath, "index.html");
+    if (fs.existsSync(indexPath)) {
+        res.sendFile(indexPath);
+    } else {
+        res.status(404).json({
+            message: "Frontend build not found",
+            path: indexPath,
+            cwd: process.cwd(),
+            __dirname: __dirname
+        });
+    }
 });
 
 // Global Error Handler
