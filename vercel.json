@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "installCommand": "cd fin-nexus/frontend && npm install && cd ../backend && npm install",
+  "buildCommand": "cd fin-nexus/frontend && npm run build",
+  "builds": [
+    {
+      "src": "fin-nexus/backend/server.js",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": [
+          "fin-nexus/frontend/dist/**"
+        ]
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "fin-nexus/backend/server.js"
+    }
+  ]
+}
